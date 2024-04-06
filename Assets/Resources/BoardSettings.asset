@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd8a0dac4874264686566e08c1cddb0, type: 3}
+  m_Name: BoardSettings
+  m_EditorClassIdentifier: 
+  tilePrefab: {fileID: 8922204826054814081, guid: 44e5175eda49df14ea791a57d629fc57, type: 3}
+  firstTilePositionOffset: {x: -100, y: -100}
+  tileOffset: 120
+  rows: 3
+  columns: 3
