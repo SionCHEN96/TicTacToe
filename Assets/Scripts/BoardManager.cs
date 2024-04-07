@@ -38,11 +38,7 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
-        gameState = GameSettings.Instance.PlayerFirst ? GameState.PlayerTurn : GameState.EnemyTurn;
-        if (gameState == GameState.EnemyTurn)
-        {
-            EnemyAI.Instance.OnEnemyTurn(board);
-        }
+        Init();
     }
 
 
@@ -171,7 +167,8 @@ public class BoardManager : MonoBehaviour
 
     public void GameWin(TileType tileType)
     {
-        //Highlight win buttons and fade out the rest
+        gameState = GameState.GameOver;
+
         for (int i = 0; i < board.Length; i++)
         {
             for (int j = 0; j < board[i].Length; j++)
@@ -185,10 +182,12 @@ public class BoardManager : MonoBehaviour
 
         if (tileType == TileType.Player)
         {
+            MainMenu.Instance.OnPlayerWin();
             ScoreCounter.Instance.IncreasePlayerScore();
         }
         else
         {
+            MainMenu.Instance.OnEnemyWin();
             ScoreCounter.Instance.IncreaseEnemyScore();
         }
     }
@@ -208,26 +207,52 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        if (isDraw)
-        {
-            for (int i = 0; i < board.Length; i++)
-            {
-                for (int j = 0; j < board[i].Length; j++)
-                {
-                    board[i][j].GetComponent<Tile>().Fade();
-                }
-            }
-
-            gameState = GameState.GameOver;
-            ScoreCounter.Instance.IncreaseDrawScore();
-        }
+        InvokeAnim();
 
         Debug.Log("Draw");
 
         return isDraw;
     }
 
+    private void InvokeAnim()
+    {
 
+        for (int i = 0; i < board.Length; i++)
+        {
+            for (int j = 0; j < board[i].Length; j++)
+            {
+                board[i][j].GetComponent<Tile>().Fade();
+            }
+        }
 
+        gameState = GameState.GameOver;
+        ScoreCounter.Instance.IncreaseDrawScore();
 
+        MainMenu.Instance.OnDraw();
+
+    }
+
+    public void ResetGame()
+    {
+        for (int i = 0; i < board.Length; i++)
+        {
+            for (int j = 0; j < board[i].Length; j++)
+            {
+                board[i][j].GetComponent<Tile>().ResetTileState();
+            }
+        }
+
+        Init();
+    }
+
+    private void Init()
+    {
+        MainMenu.Instance.OnStartGame();
+
+        gameState = GameSettings.Instance.PlayerFirst ? GameState.PlayerTurn : GameState.EnemyTurn;
+        if (gameState == GameState.EnemyTurn)
+        {
+            EnemyAI.Instance.OnEnemyTurn(board);
+        }
+    }
 }
