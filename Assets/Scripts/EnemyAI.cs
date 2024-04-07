@@ -32,6 +32,7 @@ public class EnemyAI : MonoBehaviour
     {
         yield return new WaitForSeconds(delayMoveTime);
         CalculateBestMove(board);
+        BoardManager.Instance.CheckDraw();
     }
 
     private void CalculateBestMove(Button[][] board)
@@ -73,7 +74,7 @@ public class EnemyAI : MonoBehaviour
         if (BoardManager.Instance.CheckWin(TileType.Enemy))
         {
             Debug.Log("Enemy Wins");
-            BoardManager.Instance.GameState = GameState.GameOver;
+            BoardManager.Instance.GameWin(TileType.Enemy);
             return true;
         }
         else

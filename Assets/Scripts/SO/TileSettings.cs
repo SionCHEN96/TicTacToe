@@ -12,4 +12,8 @@ public class TileSettings : ScriptableObject
     public string defaultText;
     public string playerText;
     public string enemyText;
+
+    [Header("Animation Settings")]
+    public float fadeDuration;
+    public float finalAlpha;
 }

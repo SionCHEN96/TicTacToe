@@ -21,6 +21,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private GameState gameState;
     public GameState GameState { get => gameState; set => gameState = value; }
 
+    private List<Button> winButtons = new List<Button>();
+
 
     private void Awake()
     {
@@ -67,10 +69,12 @@ public class BoardManager : MonoBehaviour
             tile.OnPlayerPlace();
             if (CheckWin(TileType.Player))
             {
-                gameState = GameState.GameOver;
+                GameWin(TileType.Player);
                 Debug.Log("Player Wins");
                 return;
             }
+
+            if (CheckDraw()) return;
             gameState = GameState.EnemyTurn;
             EnemyAI.Instance.OnEnemyTurn(board);
         }
@@ -90,11 +94,13 @@ public class BoardManager : MonoBehaviour
     {
         for (int i = 0; i < board.Length; i++)
         {
+            winButtons.Clear();
             int count = 0;
             for (int j = 0; j < board[i].Length; j++)
             {
                 if (board[i][j].GetComponent<Tile>().TileType == tileType)
                 {
+                    winButtons.Add(board[i][j]);
                     count++;
                 }
             }
@@ -110,11 +116,13 @@ public class BoardManager : MonoBehaviour
     {
         for (int i = 0; i < board.Length; i++)
         {
+            winButtons.Clear();
             int count = 0;
             for (int j = 0; j < board[i].Length; j++)
             {
                 if (board[j][i].GetComponent<Tile>().TileType == tileType)
                 {
+                    winButtons.Add(board[j][i]);
                     count++;
                 }
             }
@@ -128,11 +136,13 @@ public class BoardManager : MonoBehaviour
 
     private bool CheckDiagonal(TileType tileType)
     {
+        winButtons.Clear();
         int count = 0;
         for (int i = 0; i < board.Length; i++)
         {
             if (board[i][i].GetComponent<Tile>().TileType == tileType)
             {
+                winButtons.Add(board[i][i]);
                 count++;
             }
         }
@@ -141,11 +151,13 @@ public class BoardManager : MonoBehaviour
             return true;
         }
 
+        winButtons.Clear();
         count = 0;
         for (int i = 0; i < board.Length; i++)
         {
             if (board[i][board.Length - 1 - i].GetComponent<Tile>().TileType == tileType)
             {
+                winButtons.Add(board[i][board.Length - 1 - i]);
                 count++;
             }
         }
@@ -156,6 +168,66 @@ public class BoardManager : MonoBehaviour
 
         return false;
     }
+
+    public void GameWin(TileType tileType)
+    {
+        //Highlight win buttons and fade out the rest
+        for (int i = 0; i < board.Length; i++)
+        {
+            for (int j = 0; j < board[i].Length; j++)
+            {
+                if (!winButtons.Contains(board[i][j]))
+                {
+                    board[i][j].GetComponent<Tile>().Fade();
+                }
+            }
+        }
+
+        if (tileType == TileType.Player)
+        {
+            ScoreCounter.Instance.IncreasePlayerScore();
+        }
+        else
+        {
+            ScoreCounter.Instance.IncreaseEnemyScore();
+        }
+    }
+
+    public bool CheckDraw()
+    {
+        bool isDraw = true;
+        for (int i = 0; i < board.Length; i++)
+        {
+            for (int j = 0; j < board[i].Length; j++)
+            {
+                if (board[i][j].GetComponent<Tile>().TileType == TileType.Idle)
+                {
+                    isDraw = false;
+                    return isDraw;
+                }
+            }
+        }
+
+        if (isDraw)
+        {
+            for (int i = 0; i < board.Length; i++)
+            {
+                for (int j = 0; j < board[i].Length; j++)
+                {
+                    board[i][j].GetComponent<Tile>().Fade();
+                }
+            }
+
+            gameState = GameState.GameOver;
+            ScoreCounter.Instance.IncreaseDrawScore();
+        }
+
+        Debug.Log("Draw");
+
+        return isDraw;
+    }
+
+
 
 
 }

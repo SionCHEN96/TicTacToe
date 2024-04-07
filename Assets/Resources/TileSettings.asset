@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a784bfbb7cddfab4c9cfe34270802af2, type: 3}
   m_Name: TileSettings
   m_EditorClassIdentifier: 
-  defaultColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 0.39215687}
+  defaultColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 0.39215687}
   playerColor: {r: 0.11764706, g: 1, b: 0, a: 1}
   enemyColor: {r: 1, g: 0, b: 0, a: 1}
   defaultText: 
   playerText: X
   enemyText: O
+  fadeDuration: 1
+  finalAlpha: 0.05

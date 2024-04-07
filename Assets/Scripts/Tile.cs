@@ -61,4 +61,26 @@ public class Tile : MonoBehaviour
         buttonImage.color = tileSettings.defaultColor;
         tileType = TileType.Idle;
     }
+
+
+    public void Fade()
+    {
+        StartCoroutine(FadeCoroutine());
+    }
+
+    IEnumerator FadeCoroutine()
+    {
+        float elapsedTime = 0;
+        Color color = buttonImage.color;
+        float startAplha = color.a;
+        float finalAlpha = tileSettings.finalAlpha;
+
+        while (elapsedTime < tileSettings.fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Lerp(startAplha, finalAlpha, elapsedTime / tileSettings.fadeDuration);
+            buttonImage.color = color;
+            yield return null;
+        }
+    }
 }
