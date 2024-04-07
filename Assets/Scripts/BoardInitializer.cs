@@ -12,6 +12,10 @@ public class BoardInitializer : MonoBehaviour
     {
         InitializeBoard();
         InstantiateBoard();
+    }
+
+    private void Start()
+    {
         BoardManager.Instance.InitializeButtons(board);
     }
 
