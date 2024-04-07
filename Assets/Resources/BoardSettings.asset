@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BoardSettings
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 8922204826054814081, guid: 44e5175eda49df14ea791a57d629fc57, type: 3}
-  firstTilePositionOffset: {x: -100, y: -100}
+  firstTilePositionOffset: {x: -100, y: -80}
   tileOffset: 120
   rows: 3
   columns: 3

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class EnemyAI : MonoBehaviour
 {
+    [SerializeField] private float delayMoveTime = 0.5f;
     public static EnemyAI Instance { get; private set; }
     private void Awake()
     {
@@ -23,8 +24,14 @@ public class EnemyAI : MonoBehaviour
     {
         if (BoardManager.Instance.GameState == GameState.EnemyTurn)
         {
-            CalculateBestMove(board);
+            StartCoroutine(DelayedEnemyTurn(board));
         }
+    }
+
+    IEnumerator DelayedEnemyTurn(Button[][] board)
+    {
+        yield return new WaitForSeconds(delayMoveTime);
+        CalculateBestMove(board);
     }
 
     private void CalculateBestMove(Button[][] board)

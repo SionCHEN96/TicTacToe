@@ -36,7 +36,11 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
-        gameState = GameState.PlayerTurn;
+        gameState = GameSettings.Instance.PlayerFirst ? GameState.PlayerTurn : GameState.EnemyTurn;
+        if (gameState == GameState.EnemyTurn)
+        {
+            EnemyAI.Instance.OnEnemyTurn(board);
+        }
     }
 
 
@@ -56,10 +60,7 @@ public class BoardManager : MonoBehaviour
 
     private void OnButtonClick(Tile tile)
     {
-        if (gameState == GameState.GameOver || gameState == GameState.EnemyTurn)
-        {
-            return;
-        }
+        if (gameState != GameState.PlayerTurn) return;
 
         if (tile.TileType == TileType.Idle)
         {

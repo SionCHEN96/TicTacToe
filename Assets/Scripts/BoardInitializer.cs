@@ -8,7 +8,7 @@ public class BoardInitializer : MonoBehaviour
     [SerializeField] private BoardSettings boardSettings;
     Button[][] board;
 
-    private void Start()
+    private void Awake()
     {
         InitializeBoard();
         InstantiateBoard();
